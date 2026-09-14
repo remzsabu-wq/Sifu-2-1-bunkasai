@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Festival Queue Display</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="screen active" id="visitor-screen">
+      <div class="container queue-container">
+        <div class="app-shell">
+          <section class="panel call-panel">
+            <div class="panel-header">
+              <h2>現在呼び出し中</h2>
+            </div>
+            <div id="call-range" class="range-grid"></div>
+          </section>
+
+          <section class="panel wait-panel">
+            <div class="panel-header">
+              <h2>到着待ち</h2>
+            </div>
+            <div id="waiting-list" class="waiting-list"></div>
+          </section>
+        </div>
+
+        <div class="dev-lock">
+          <button id="dev-trigger" class="dev-trigger" type="button">開発者ボタン</button>
+          <p>開発者ボタンを押してパスワードを入力してください</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="admin-screen">
+      <div class="container admin-container">
+        <h1>管理画面</h1>
+
+        <div id="admin-lock-panel" class="section">
+          <h2>開発者コード</h2>
+          <input id="dev-code-input" type="password" placeholder="パスワードを入力" />
+          <button id="unlock-admin-btn" class="btn btn-primary" type="button">管理画面を開く</button>
+        </div>
+
+        <div id="admin-panel" class="admin-panel hidden">
+          <div class="section range-control-section">
+            <h2>現在の表示範囲</h2>
+            <div class="range-nav">
+              <button id="move-left-btn" class="nav-btn" type="button" aria-label="左へ移動">←</button>
+              <div id="admin-range-label" class="range-label">1~6</div>
+              <button id="move-right-btn" class="nav-btn" type="button" aria-label="右へ移動">→</button>
+            </div>
+            <label for="admin-range-input">開始番号</label>
+            <input id="admin-range-input" type="number" min="1" step="1" placeholder="1" />
+          </div>
+
+          <div class="section">
+            <h2>到着待ち番号</h2>
+            <div class="input-group">
+              <input id="waiting-number-input" type="number" min="1" step="1" placeholder="例: 15" />
+              <button id="add-waiting-btn" class="btn btn-secondary" type="button">追加 / 削除</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>表示中の待ち番号</h2>
+            <div id="admin-waiting-list" class="waiting-list admin-waiting-list"></div>
+          </div>
+
+          <div class="section qr-block">
+            <p class="qr-label">プレビューサイトQRコード</p>
+            <img src="preview-qr.png" alt="プレビューサイトQRコード" class="site-qr" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
