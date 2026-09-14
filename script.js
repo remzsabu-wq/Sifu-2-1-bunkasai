@@ -203,7 +203,3 @@ setScreen('visitor');
 window.setInterval(() => {
   window.location.reload();
 }, 60000);
-
-window.setInterval(() => {
-  window.location.reload();
-}, 60000);
