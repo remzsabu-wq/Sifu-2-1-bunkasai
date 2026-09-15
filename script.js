@@ -7,7 +7,7 @@ const defaultState = {
   waitingNumbers: []
 };
 
-const state = loadState();
+let state = loadState();
 
 const visitorScreen = document.getElementById('visitor-screen');
 const adminScreen = document.getElementById('admin-screen');
@@ -107,6 +107,11 @@ function renderWaitingList() {
   renderTemplate(adminWaitingListNode);
 }
 
+function syncStateFromStorage() {
+  state = loadState();
+  renderAll();
+}
+
 function renderAll() {
   renderRangeDisplay();
   renderWaitingList();
@@ -194,6 +199,12 @@ document.getElementById('waiting-number-input').addEventListener('keydown', (eve
 document.getElementById('dev-code-input').addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     unlockAdmin();
+  }
+});
+
+window.addEventListener('storage', (event) => {
+  if (event.key === STORAGE_KEY) {
+    syncStateFromStorage();
   }
 });
 
