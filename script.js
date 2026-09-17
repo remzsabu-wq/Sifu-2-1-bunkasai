@@ -40,7 +40,7 @@ function loadState() {
 
 function normalizeStart(value) {
   const parsed = Number(value);
-  return Number.isInteger(parsed) && parsed > 0 ? parsed : 1;
+  return Number.isInteger(parsed) && parsed >= 0 ? parsed : 1;
 }
 
 function normalizeList(value) {
@@ -75,7 +75,11 @@ function setScreen(screenName) {
 }
 
 function renderRangeDisplay() {
-  const rangeNumbers = Array.from({ length: WINDOW_SIZE }, (_, index) => state.rangeStart + index);
+  const rangeNumbers = Array.from({ length: WINDOW_SIZE }, (_, index) => {
+    const number = state.rangeStart + index;
+    return number < 1 ? '準備中' : number;
+  });
+
   callRangeNode.innerHTML = rangeNumbers
     .map((number) => `<div class="queue-number">${number}</div>`)
     .join('');
@@ -146,8 +150,8 @@ function removeWaitingNumber(value) {
 
 function setRangeStart(value) {
   const parsed = Number(value);
-  if (!Number.isInteger(parsed) || parsed < 1) {
-    showToast('開始番号は1以上で入力してください', 'error');
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    showToast('開始番号は0以上で入力してください', 'error');
     return;
   }
 
@@ -178,7 +182,7 @@ function openDeveloperUnlock() {
 document.getElementById('dev-trigger').addEventListener('click', openDeveloperUnlock);
 document.getElementById('unlock-admin-btn').addEventListener('click', unlockAdmin);
 document.getElementById('move-left-btn').addEventListener('click', () => {
-  state.rangeStart = Math.max(1, state.rangeStart - 1);
+  state.rangeStart = Math.max(0, state.rangeStart - 1);
   renderAll();
 });
 document.getElementById('move-right-btn').addEventListener('click', () => {
