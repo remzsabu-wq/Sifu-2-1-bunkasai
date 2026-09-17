@@ -8,6 +8,7 @@ const defaultState = {
 };
 
 let state = loadState();
+let publicRefreshTimer = null;
 
 const visitorScreen = document.getElementById('visitor-screen');
 const adminScreen = document.getElementById('admin-screen');
@@ -72,6 +73,20 @@ function showToast(message, type = 'success') {
 function setScreen(screenName) {
   visitorScreen.classList.toggle('active', screenName === 'visitor');
   adminScreen.classList.toggle('active', screenName === 'admin');
+
+  if (screenName === 'admin') {
+    if (publicRefreshTimer) {
+      window.clearInterval(publicRefreshTimer);
+      publicRefreshTimer = null;
+    }
+    return;
+  }
+
+  if (!publicRefreshTimer) {
+    publicRefreshTimer = window.setInterval(() => {
+      window.location.reload();
+    }, 60000);
+  }
 }
 
 function renderRangeDisplay() {
@@ -189,6 +204,9 @@ document.getElementById('move-right-btn').addEventListener('click', () => {
   state.rangeStart = state.rangeStart + 1;
   renderAll();
 });
+document.getElementById('admin-range-input').addEventListener('input', (event) => {
+  setRangeStart(event.target.value);
+});
 document.getElementById('admin-range-input').addEventListener('change', (event) => {
   setRangeStart(event.target.value);
 });
@@ -214,7 +232,3 @@ window.addEventListener('storage', (event) => {
 
 renderAll();
 setScreen('visitor');
-
-window.setInterval(() => {
-  window.location.reload();
-}, 60000);
